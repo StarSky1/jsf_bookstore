@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yj</groupId>
+    <artifactId>jsf_bookstore1</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>JSF</name>
+    <description>这是一个主要基于JSF的快速开发平台。</description>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>4.12</junit.version>
+        <hibernate-core>5.4.1.Final</hibernate-core>
+        <hibernate-entitymanager>5.4.1.Final</hibernate-entitymanager>
+        <hibernate-commons-annotations>5.0.4.Final</hibernate-commons-annotations>
+        <hibernate-ehcache>5.4.1.Final</hibernate-ehcache>
+        <hibernate-jpa-2.1-api>1.0.2.Final</hibernate-jpa-2.1-api>
+        <mysql-connector-java>5.1.47</mysql-connector-java>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.faces</artifactId>
+            <version>2.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>6.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-entitymanager}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.common/hibernate-commons-annotations -->
+        <dependency>
+            <groupId>org.hibernate.common</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>${hibernate-commons-annotations}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate-ehcache}</version>
+        </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>${hibernate-jpa-2.1-api}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dir}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,
+                  maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+    </f:facet>
+    <title>index</title>
+</h:head>
+<h:body>
+    <f:view>
+        <h:outputLabel value="Hello, world"/>
+    </f:view>
+
+    <h2>JSF测试</h2>
+    <p:separator />
+    <br/>
+
+    <h:form id="fm">
+        <p:panelGrid columns="2" layout="grid"  >
+            <h:panelGroup layout="block" style="">
+                <p:button value="按钮"></p:button>
+            </h:panelGroup>
+        </p:panelGrid>
+
+        <p:layout style="height: 60px;">
+            <!--1.这里是关键
+           //==============================-->
+            <p:outputLabel value="#{user.name}"></p:outputLabel>
+        </p:layout>
+    </h:form>
+
+    <h:form>
+        <h:outputLabel for="username">User Name</h:outputLabel>
+        <h:inputText id="username" value="#{user.name}" required="true" requiredMessage="User Name is required" /><br/>
+        <h:commandButton id="submit-button" value="Submit" action="response.xhtml"/>
+    </h:form>
+
+    <h:form>
+        <h:inputText id="name" value="#{user.name}"></h:inputText>
+        <h:commandButton value="Welcome Me">
+            <f:ajax execute="name" render="output" />
+        </h:commandButton>
+
+        <h2><h:outputText id="output" value="#{user.sayWelcome}" /></h2>
+    </h:form>
+
+
+
+
+
+</h:body>
+
+
+</html>
