@@ -17,25 +17,48 @@
     <title>图书列表</title>
 </h:head>
 <h:body>
-    <h:outputScript  value="./WEB-INF/JS/zh_cn.js"  target="head" />
-    <h:form id="form1">
-        <p:dataTable var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10"
+    <h:outputScript target="head" value="./WEB-INF/JS/zh_cn.js"></h:outputScript>
+    <h:form id="form1" style="margin-top: 10%;">
+        <center>
+            <h2><h:outputText value="图书列表"/></h2>
+        </center>
+
+        <p:dataTable style="margin-left: 10%;margin-right: 10%;" var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
                      {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                     rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true">
+                     rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true"
+                     class="table table-striped table-hover table-bordered">
             <p:column headerText="id">
-                <h:outputText value="#{index}" />
+                <h:outputText value="#{index+1}" />
             </p:column>
 
             <p:column headerText="书名">
                 <h:outputText value="#{book.bookName}" />
             </p:column>
-
+            <p:column headerText="作者">
+                <h:outputText value="#{book.author}" />
+            </p:column>
+            <p:column headerText="分类">
+                <h:outputText value="#{book.category}" />
+            </p:column>
+            <p:column headerText="价格">
+                <h:outputText value="#{book.price}" />
+            </p:column>
+            <p:column headerText="出版社">
+                <h:outputText value="#{book.publishHouse}" />
+            </p:column>
             <p:column headerText="出版时间">
                 <h:outputText value="#{book.publishDate}">
                     <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" locale="zh_CN" />
                 </h:outputText>
             </p:column>
+            <p:column headerText="简介">
+                <h:outputText value="#{book.brief}" />
+            </p:column>
+
+            <f:facet name="paginatorTopLeft">
+                <p:commandButton type="button" icon="pi pi-refresh" />
+            </f:facet>
         </p:dataTable>
     </h:form>
 

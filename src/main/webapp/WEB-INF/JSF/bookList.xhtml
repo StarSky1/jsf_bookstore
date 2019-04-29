@@ -27,11 +27,25 @@
             <p:column headerText="书名">
                 <h:outputText value="#{book.bookName}" />
             </p:column>
-
+            <p:column headerText="作者">
+                <h:outputText value="#{book.author}" />
+            </p:column>
+            <p:column headerText="分类">
+                <h:outputText value="#{book.category}" />
+            </p:column>
+            <p:column headerText="价格">
+                <h:outputText value="#{book.price}" />
+            </p:column>
+            <p:column headerText="出版社">
+                <h:outputText value="#{book.publishHouse}" />
+            </p:column>
             <p:column headerText="出版时间">
                 <h:outputText value="#{book.publishDate}">
-                    <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" locale="zh_CN" />
+                    <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" locale="zh_CN" />
                 </h:outputText>
+            </p:column>
+            <p:column headerText="简介">
+                <h:outputText value="#{book.brief}" />
             </p:column>
 
             <f:facet name="paginatorTopLeft">
