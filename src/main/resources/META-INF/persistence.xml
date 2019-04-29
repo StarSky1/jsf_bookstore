@@ -7,7 +7,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- 两个实体类 -->
-        <class>com.yj.bookstore.model.Book</class>
+        <class>com.yj.bookstore.model.domain.Book</class>
 
         <properties>
             <!-- 数据库连接配置 -->

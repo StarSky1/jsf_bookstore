@@ -1,4 +1,4 @@
-package com.yj.bookstore.model;
+package com.yj.bookstore.model.domain;
 
 import javax.persistence.*;
 import java.util.Date;

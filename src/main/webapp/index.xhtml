@@ -15,6 +15,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
     </f:facet>
     <title>index</title>
+    <link href="WEB-INF/Plugins/bootstrap3.3.7/css/bootstrap.css" rel="stylesheet"></link>
 </h:head>
 <h:body>
     <f:view>
@@ -32,11 +33,11 @@
             </h:panelGroup>
         </p:panelGrid>
 
-        <p:layout style="height: 60px;">
-            <!--1.这里是关键
-           //==============================-->
-            <p:outputLabel value="#{user.name}"></p:outputLabel>
-        </p:layout>
+        <!--<p:layout style="height: 60px;">-->
+            <!--&lt;!&ndash;1.这里是关键-->
+           <!--//==============================&ndash;&gt;-->
+            <!--<p:outputLabel value="#{user.name}"></p:outputLabel>-->
+        <!--</p:layout>-->
     </h:form>
 
     <h:form>
@@ -53,6 +54,13 @@
 
         <h2><h:outputText id="output" value="#{user.sayWelcome}" /></h2>
     </h:form>
+
+    <h:form>
+        <center><p:commandButton action = "bookList.xhtml?faces-redirect=true"
+                                 value="show book list" class="btn btn-success"></p:commandButton></center>
+    </h:form>
+
+
 
 
 

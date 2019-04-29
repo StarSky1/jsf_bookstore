@@ -22,7 +22,23 @@
         <hibernate-ehcache>5.4.1.Final</hibernate-ehcache>
         <hibernate-jpa-2.1-api>1.0.2.Final</hibernate-jpa-2.1-api>
         <mysql-connector-java>5.1.47</mysql-connector-java>
+        <lombok.version>1.18.2</lombok.version>
+        <commons-beanutils>1.9.3</commons-beanutils>
+        <fastjson>1.2.47</fastjson>
     </properties>
+
+    <repositories>
+        <repository>
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+            就会覆盖中央仓库的配置 -->
+            <id>primefaces</id>
+            <name>primefaces</name>
+            <url>http://repository.primefaces.org/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -41,6 +57,14 @@
             <artifactId>primefaces</artifactId>
             <version>6.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.primefaces.themes/bootstrap -->
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
@@ -92,6 +116,31 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson}</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

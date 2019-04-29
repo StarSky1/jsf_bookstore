@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,
+                  maximum-scale=1.0, user-scalable=0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+    </f:facet>
+    <title>图书列表</title>
+</h:head>
+<h:body>
+    <h:outputScript  value="../JS/zh_cn.js"  target="head" />
+    <h:form id="form1">
+        <p:dataTable var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true">
+            <p:column headerText="id">
+                <h:outputText value="#{index+1}" />
+            </p:column>
+
+            <p:column headerText="书名">
+                <h:outputText value="#{book.bookName}" />
+            </p:column>
+
+            <p:column headerText="出版时间">
+                <h:outputText value="#{book.publishDate}">
+                    <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss" locale="zh_CN" />
+                </h:outputText>
+            </p:column>
+
+            <f:facet name="paginatorTopLeft">
+                <p:commandButton type="button" icon="pi pi-refresh" />
+            </f:facet>
+        </p:dataTable>
+    </h:form>
+
+</h:body>
+</html>

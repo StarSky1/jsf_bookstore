@@ -1,22 +1,20 @@
 package com.yj.bookstore.model;
 
+import com.alibaba.fastjson.JSON;
 import com.yj.bookstore.dao.EntityDao;
+import com.yj.bookstore.model.domain.Book;
 import org.hibernate.jpa.QueryHints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.QueryHint;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @Author 76355
@@ -73,6 +71,31 @@ public class BookTest {
         String jpql="select new Book(b.bookName, b.price) from Book b where b.price > ?1";
         List<Book> books=entityManager.createQuery(jpql).setParameter(1,20.0).getResultList();
         System.out.println(books);
+    }
+
+    @Test
+    public void testPage(){
+        String sql="select * from book b where 1=1 limit ?,?";
+        Query query=entityManager.createNativeQuery(sql);
+        query.setParameter(1,0);
+        query.setParameter(2,10);
+        List<Book> list=new ArrayList<>();
+        query.getResultList().stream().forEach(item -> {
+            Object[] array=(Object[])item;
+            Book book=new Book();
+            book.setId((Integer) array[0]);
+            book.setAuthor((String)array[1]);
+            book.setBookName((String)array[2]);
+            book.setBrief((String)array[3]);
+            book.setCategory((String)array[4]);
+            book.setPrice((Double)array[5]);
+            book.setPublishDate((Date)array[6]);
+            book.setPublishHouse((String)array[7]);
+            list.add(book);
+        });
+        for (Book o : list) {
+            System.out.println(JSON.toJSONString(o));
+        }
     }
 
     @Test
