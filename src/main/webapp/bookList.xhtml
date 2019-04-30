@@ -15,52 +15,183 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
     </f:facet>
     <title>图书列表</title>
+    <link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.css" />
 </h:head>
 <h:body>
     <h:outputScript target="head" value="./WEB-INF/JS/zh_cn.js"></h:outputScript>
+    <script type="text/javascript">
+        PrimeFaces.locales['zh_CN'] = {
+            closeText: '关闭',
+            prevText: '上个月',
+            nextText: '下个月',
+            currentText: '今天',
+            monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            monthNamesShort: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+            dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+            dayNamesShort: ['日','一','二','三','四','五','六'],
+            dayNamesMin: ['日','一','二','三','四','五','六'],
+            weekHeader: '周',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: true,
+            yearSuffix: '', // 年
+            timeOnlyTitle: '仅时间',
+            timeText: '时间',
+            hourText: '时',
+            minuteText: '分',
+            secondText: '秒',
+            ampm: false,
+            month: '月',
+            week: '周',
+            day: '日',
+            allDayText : '全天'
+        };
+    </script>
+    <style type="text/css">
+        table tr td:first-child {
+            text-align: center;
+        }
+    </style>
     <h:form id="form1" style="margin-top: 10%;">
         <center>
             <h2><h:outputText value="图书列表"/></h2>
         </center>
-
-        <p:dataTable style="margin-left: 10%;margin-right: 10%;" var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10"
+        <p:growl id="msgs" showDetail="true"/>
+        <p:dataTable widgetVar="bookTable" style="margin-left: 2%;margin-right: 2%;" var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
                      {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                     rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true"
-                     class="table table-striped table-hover table-bordered">
-            <p:column headerText="id">
-                <h:outputText value="#{index+1}" />
+                     rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true" editable="true"
+                     paginatorPosition="bottom" selection="#{bookBean.selectedBook}" selectionMode="single"
+                     rowKey="#{book.id}">
+
+            <p:ajax event="rowEdit" listener="#{bookBean.onRowEdit}" update=":form1:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{bookBean.onRowCancel}" update=":form1:msgs" />
+
+            <p:column headerText="序号" width="40">
+                <h:outputText value="#{index+1}" style="text-align: center;" />
             </p:column>
 
-            <p:column headerText="书名">
-                <h:outputText value="#{book.bookName}" />
+            <p:column headerText="书名" width="150">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{book.bookName}" /></f:facet>
+                    <f:facet name="input">
+                        <p:inputTextarea value="#{book.bookName}" label="bookName" rows="5" cols="17" counter="display_bookName" maxlength="50"
+                                         counterTemplate="{0} 字符剩余。" autoResize="false" />
+                        <h:outputText id="display_bookName" />
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
             <p:column headerText="作者">
-                <h:outputText value="#{book.author}" />
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{book.author}" /></f:facet>
+                    <f:facet name="input">
+                        <p:inputTextarea value="#{book.author}" label="author" rows="5" cols="11" counter="display_author" maxlength="20"
+                                         counterTemplate="{0} 字符剩余。" autoResize="false" />
+                        <h:outputText id="display_author" />
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
             <p:column headerText="分类">
-                <h:outputText value="#{book.category}" />
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{book.category}"  /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{book.category}" style="width:100%" label="category"/></f:facet>
+                </p:cellEditor>
             </p:column>
             <p:column headerText="价格">
-                <h:outputText value="#{book.price}" />
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{book.price}" >
+                            <f:convertNumber currencySymbol="￥" type="currency"/>
+                        </h:outputText>
+                    </f:facet>
+                    <f:facet name="input"><p:inputText value="#{book.price}" style="width:100%" label="price"/></f:facet>
+                </p:cellEditor>
             </p:column>
-            <p:column headerText="出版社">
-                <h:outputText value="#{book.publishHouse}" />
+            <p:column headerText="出版社" width="150">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{book.publishHouse}" /></f:facet>
+                    <f:facet name="input">
+                        <p:inputTextarea value="#{book.publishHouse}" label="publishHouse" rows="5" cols="17" counter="display_publishHouse" maxlength="50"
+                                         counterTemplate="{0} 字符剩余。" autoResize="false" />
+                        <h:outputText id="display_publishHouse" />
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
-            <p:column headerText="出版时间">
-                <h:outputText value="#{book.publishDate}">
-                    <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" locale="zh_CN" />
-                </h:outputText>
+            <p:column headerText="出版时间" width="120">
+                <p:cellEditor>
+                    <f:facet name="output">
+                        <h:outputText value="#{book.publishDate}" >
+                            <f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd" locale="zh_CN" />
+                        </h:outputText>
+                    </f:facet>
+                    <f:facet name="input">
+                        <p:calendar id="german" value="#{book.publishDate}" locale="zh_CN" navigator="true" pattern="yyyy-MMM-dd" />
+                    </f:facet>
+                </p:cellEditor>
             </p:column>
-            <p:column headerText="简介">
-                <h:outputText value="#{book.brief}" />
+            <p:column headerText="简介" width="200">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{book.brief}" /></f:facet>
+                    <f:facet name="input">
+                        <p:inputTextarea value="#{book.brief}" label="brief" rows="5" cols="25" counter="display" maxlength="200"
+                                         counterTemplate="{0} 字符剩余。" autoResize="false" />
+                        <h:outputText id="display" />
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column style="width:50px">
+                <p:rowEditor />
+                <p:commandButton styleClass="fa fa-delete" update=":form1:msgs"  action="#{bookBean.onDeleteBook}"/>
             </p:column>
 
             <f:facet name="paginatorTopLeft">
-                <p:commandButton type="button" icon="pi pi-refresh" />
+                <p:commandButton type="button" styleClass="fa fa-refresh" />
             </f:facet>
         </p:dataTable>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <center>
+                    <p:commandButton value="添加图书" onclick="PF('addDialog').show()" />
+                </center>
+            </div>
+        </div>
     </h:form>
+
+    <p:dialog header="添加图书" widgetVar="addDialog" modal="true">
+        <h:form id="form3">
+            <h:panelGrid columns="2" cellpadding="5" id="addPanel">
+                <p:outputLabel value="书名" />
+                <p:inputText value="#{bookBean.book.bookName}" />
+
+                <p:outputLabel value="作者" />
+                <p:inputText value="#{bookBean.book.author}" />
+
+                <p:outputLabel value="分类" />
+                <p:inputText value="#{bookBean.book.category}" />
+
+                <p:outputLabel value="价格" />
+                <p:inputNumber value="#{bookBean.book.price}" symbol="元" symbolPosition="s"
+                                decimalPlaces="2"/>
+
+                <p:outputLabel value="出版社" />
+                <p:inputText value="#{bookBean.book.publishHouse}" />
+
+                <p:outputLabel value="出版时间" />
+                <p:calendar value="#{bookBean.book.publishDate}" locale="zh_CN" navigator="true" pattern="yyyy-MMM-dd" />
+
+                <p:outputLabel value="简介" />
+                <p:inputTextarea value="#{bookBean.book.brief}" label="brief" rows="5" cols="25" counter="display_add" maxlength="200"
+                                 counterTemplate="{0} 字符剩余。" autoResize="false" />
+                <p:outputLabel></p:outputLabel>
+                <h:outputText id="display_add" />
+                <p:outputLabel></p:outputLabel>
+                <p:commandButton value="保存" oncomplete="PF('addDialog').hide()" actionListener="#{bookBean.onAddNew}"
+                                 update=":form1:bookTable,form3,:form1:msgs"  />
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 
 </h:body>
 </html>
