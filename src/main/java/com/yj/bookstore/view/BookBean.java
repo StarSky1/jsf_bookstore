@@ -34,7 +34,6 @@ public class BookBean implements Serializable{
 
     public BookBean(){
         book=new Book();
-        selectedBook=new Book();
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -56,9 +55,18 @@ public class BookBean implements Serializable{
         book = new Book();
     }
 
-    public void onDeleteBook(){
+    public void onDeleteBook(ActionEvent event){
         FacesMessage msg = new FacesMessage("图书已删除", selectedBook.getBookName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onDeleteBookCancel(ActionEvent event){
+        FacesMessage msg = new FacesMessage("删除已取消", selectedBook.getBookName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void select(Book book) {
+        selectedBook=book;
     }
 
 

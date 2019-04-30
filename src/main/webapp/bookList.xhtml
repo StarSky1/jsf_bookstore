@@ -61,8 +61,7 @@
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
                      {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                      rowsPerPageTemplate="5,10,15" id="bookTable" lazy="true" editable="true"
-                     paginatorPosition="bottom" selection="#{bookBean.selectedBook}" selectionMode="single"
-                     rowKey="#{book.id}">
+                     paginatorPosition="bottom">
 
             <p:ajax event="rowEdit" listener="#{bookBean.onRowEdit}" update=":form1:msgs" />
             <p:ajax event="rowEditCancel" listener="#{bookBean.onRowCancel}" update=":form1:msgs" />
@@ -140,9 +139,14 @@
                 </p:cellEditor>
             </p:column>
 
-            <p:column style="width:50px">
+            <p:column style="width:35px">
                 <p:rowEditor />
-                <p:commandButton styleClass="fa fa-delete" update=":form1:msgs"  action="#{bookBean.onDeleteBook}"/>
+            </p:column>
+
+            <p:column style="width: 35px;">
+                <p:commandButton  icon="ui-icon-close">
+                    <p:ajax event="click" listener="#{bookBean.select(book)}" oncomplete="PF('delDialog').show()" />
+                </p:commandButton>
             </p:column>
 
             <f:facet name="paginatorTopLeft">
@@ -158,6 +162,19 @@
             </div>
         </div>
     </h:form>
+
+    <p:dialog header="删除提示" widgetVar="delDialog" modal="true">
+        <h:form id="form2">
+            <h:panelGrid columns="2" cellpadding="5" id="delPanel">
+                <f:facet name="facet1">
+                    <p:outputLabel value="确定要删除吗?" />
+                </f:facet>
+
+                <p:commandButton value="是的" actionListener="#{bookBean.onDeleteBook}" update=":form1:bookTable,:form1:msgs"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('delDialog').hide()" />
+                <p:commandButton value="不是" actionListener="#{bookBean.onDeleteBookCancel}" update=":form1:msgs" styleClass="ui-confirmdialog-no" icon="ui-icon-close" oncomplete="PF('delDialog').hide()" />
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 
     <p:dialog header="添加图书" widgetVar="addDialog" modal="true">
         <h:form id="form3">
