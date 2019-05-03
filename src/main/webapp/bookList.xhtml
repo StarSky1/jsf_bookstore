@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jstl/core">
 <h:head>
     <f:facet name="first">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -52,10 +53,33 @@
             text-align: center;
         }
     </style>
-    <h:form id="form1" style="margin-top: 10%;">
-        <center>
-            <h2><h:outputText value="图书列表"/></h2>
-        </center>
+    <center>
+        <h2 style="margin-bottom: 0px;"><h:outputText value="图书列表"/></h2>
+    </center>
+    <h:form id="form4">
+        <h3 style="margin-left: 2%;margin-bottom: 0px;">查询条件</h3>
+    <h:panelGrid  columns="6" style="margin-bottom:10px;margin-left: 2%;margin-right: 2%;" cellpadding="5">
+        <p:outputLabel for="booname" value="书名:" />
+        <p:inputText id="booname" value="#{bookBean.selectBean.bookName}"/>
+        <p:outputLabel for="startDate" value="开始时间:" />
+        <p:calendar id="startDate" style="width: 80px;" value="#{bookBean.selectBean.startDate}" locale="zh_CN" navigator="true" pattern="yyyy-MMM-dd" />
+        <p:outputLabel for="endDate" value="结束时间:" />
+        <p:calendar style="width: 80px;" id="endDate" value="#{bookBean.selectBean.endDate}" locale="zh_CN" navigator="true" pattern="yyyy-MMM-dd" />
+        <p:outputLabel for="category" value="分类:" />
+        <p:inputText id="category" value="#{bookBean.selectBean.category}"/>
+        <p:outputLabel for="startPrice" value="开始价格:" />
+        <p:inputNumber id="startPrice" value="#{bookBean.selectBean.startPrice}" symbol="元" symbolPosition="s"
+                       decimalPlaces="2"/>
+        <p:outputLabel for="endPrice" value="结束价格:" />
+        <p:inputNumber id="endPrice" value="#{bookBean.selectBean.endPrice}" symbol="元" symbolPosition="s"
+                       decimalPlaces="2"/>
+        <p:outputLabel for="brief" value="简介:" />
+        <p:inputText id="brief" value="#{bookBean.selectBean.brief}"/>
+        <p:commandButton value="查询" action="#{bookBean.selectBean.select}" update=":form1:bookTable,:form1:msgs"/>
+        <p:commandButton value="重置" action="#{bookBean.selectBean.reset}" update=":form1:bookTable,:form1:msgs,form4" />
+    </h:panelGrid>
+    </h:form>
+    <h:form id="form1">
         <p:growl id="msgs" showDetail="true"/>
         <p:dataTable widgetVar="bookTable" style="margin-left: 2%;margin-right: 2%;" var="book" rowIndexVar="index" value="#{bookBean.lazyModel}" paginator="true" rows="10"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}

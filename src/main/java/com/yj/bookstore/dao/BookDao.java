@@ -2,12 +2,15 @@ package com.yj.bookstore.dao;
 
 import com.yj.bookstore.model.domain.Book;
 import com.yj.bookstore.model.dto.PageObject;
+import com.yj.bookstore.model.dto.SelectItem;
 import lombok.Data;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 @Named
 @Data
-public class BookDao implements BaseDao<Book,Integer>{
+public class BookDao implements BaseDao<Book,Integer> {
     @Inject
     private EntityDao entityDao;
 
@@ -60,24 +63,63 @@ public class BookDao implements BaseDao<Book,Integer>{
         entityDao.after();
     }
 
+    public Book findByBookNameAndAuthor(String bookName,String author){
+        entityDao.init();
+        EntityManager entityManager=entityDao.getEntityManager();
+        String jpql="select b from Book b where b.bookName =?1 and b.author = ?2";
+        Query query=entityManager.createQuery(jpql);
+        query.setParameter(1,bookName);
+        query.setParameter(2,author);
+        List<Book> books=query.getResultList();
+        entityDao.after();
+        if(books.size()>0){
+            return books.get(1);
+        }else{
+            return null;
+        }
+    }
+
     //分页查询
-    public PageObject<Book> findList(int first, int pageSize){
+    public PageObject<Book> findList(int first, int pageSize, List<SelectItem> selectItems){
         entityDao.init();
         EntityManager entityManager=entityDao.getEntityManager();
         //分页查询
-        String sql="select * from book b where 1=1 limit ?,?";
+        StringBuilder sb=new StringBuilder();
+        sb.append("select * from book b where 1=1 ");
+        for (SelectItem item : selectItems) {
+            sb.append("and ");
+            sb.append(item.getColumn()+" "+item.getExpression()+" ");
+            sb.append("? ");
+        }
+        String countSql="select count(id) "+ sb.substring(sb.indexOf("*")+1);
+        sb.append("limit ?,?");
+        String sql=sb.toString();
         Query query=entityManager.createNativeQuery(sql);
-        first=first<1?1:first;
-        int start=(first-1)*pageSize;
+        Query countQuery=entityManager.createNativeQuery(countSql);
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item=selectItems.get(i);
+            String column= item.getColumn();
+            if(column.equals("book_name") || column.equals("category") || column.equals("brief")){
+                query.setParameter(i+1,"%"+(String)item.getValue()+"%");
+                countQuery.setParameter(i+1,"%"+(String)item.getValue()+"%");
+            }
+            if(column.equals("publish_date")){
+                query.setParameter(i+1,(Date)item.getValue());
+                countQuery.setParameter(i+1,(Date)item.getValue());
+            }
+            if(column.equals("price")){
+                query.setParameter(i+1,(Double)item.getValue());
+                countQuery.setParameter(i+1,(Double)item.getValue());
+            }
+        }
+        int start=first;
         int offset=pageSize;
-        query.setParameter(1,start);
-        query.setParameter(2,offset);
+        query.setParameter(selectItems.size()+1,start);
+        query.setParameter(selectItems.size()+2,offset);
         List<Object> objectList=query.getResultList();
         List<Book> list=objListToBookList(objectList);
         //查询 总记录数
-        sql="select count(id) from book b";
-        query=entityManager.createNativeQuery(sql);
-        Integer count=((BigInteger)query.getSingleResult()).intValue();
+        Integer count=((BigInteger)countQuery.getSingleResult()).intValue();
         PageObject<Book> pageObject=new PageObject<>(list,count);
         //关闭资源
         entityDao.after();

@@ -12,6 +12,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,12 +32,17 @@ public class BookBean implements Serializable{
     private BookDao bookDao;
     @Inject
     private LazyDataModel<Book> lazyModel;
+    @Inject
+    private SelectBean selectBean;
+
+    private String selectMode;
 
     public BookBean(){
         book=new Book();
     }
 
     public void onRowEdit(RowEditEvent event) {
+        bookDao.updateById((Book) event.getObject());
         FacesMessage msg = new FacesMessage("编辑成功", ((Book) event.getObject()).getBookName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
@@ -48,14 +54,21 @@ public class BookBean implements Serializable{
 
     public void onAddNew() {
         // Add one new car to the table:
-        //bookDao.insertRecord(book);
-        FacesMessage msg = new FacesMessage("图书已添加", book.getBookName());
+        Book existBook=bookDao.findByBookNameAndAuthor(book.getBookName(),book.getAuthor());
+        FacesMessage msg;
+        if(existBook==null){
+            bookDao.insertRecord(book);
+            msg = new FacesMessage("图书已添加", book.getBookName());
+            //清空book的属性值
+            book = new Book();
+        }else{
+            msg = new FacesMessage("图书已存在", book.getBookName());
+        }
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        //清空book的属性值
-        book = new Book();
     }
 
     public void onDeleteBook(ActionEvent event){
+        bookDao.deleteById(selectedBook.getId());
         FacesMessage msg = new FacesMessage("图书已删除", selectedBook.getBookName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
@@ -68,7 +81,5 @@ public class BookBean implements Serializable{
     public void select(Book book) {
         selectedBook=book;
     }
-
-
 
 }
