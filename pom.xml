@@ -16,7 +16,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <hibernate-core>5.4.1.Final</hibernate-core>
+        <hibernate-core>5.4.24.Final</hibernate-core>
         <hibernate-entitymanager>5.4.1.Final</hibernate-entitymanager>
         <hibernate-commons-annotations>5.0.4.Final</hibernate-commons-annotations>
         <hibernate-ehcache>5.4.1.Final</hibernate-ehcache>
