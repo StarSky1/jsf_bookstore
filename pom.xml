@@ -24,7 +24,7 @@
         <mysql-connector-java>5.1.47</mysql-connector-java>
         <lombok.version>1.18.2</lombok.version>
         <commons-beanutils>1.9.3</commons-beanutils>
-        <fastjson>1.2.47</fastjson>
+        <fastjson>1.2.83</fastjson>
     </properties>
 
     <repositories>
